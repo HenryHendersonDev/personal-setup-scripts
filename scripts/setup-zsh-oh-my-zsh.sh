@@ -2,8 +2,8 @@
 
 # Ensure the script is run as root
 if [[ $EUID -ne 0 ]]; then
-    echo "This script must be run as root. Please run with 'sudo'."
-    exit 1
+  echo "This script must be run as root. Please run with 'sudo'."
+  exit 1
 fi
 
 # Step 1: Install required packages
@@ -111,9 +111,9 @@ alias off="sudo shutdown -P now"    # Alias for shutting down the system immedia
 # Proxy Configuration Aliases
 # -------------------------------
 
-alias startVPN='if [ -f /usr/local/xray/config.json ]; then nohup /usr/local/xray/xray -config /usr/local/xray/config.json > xray.log 2>&1 & echo $! > xray.pid && /home/caesar/Downloads/add_proxy.sh; else echo "File not Found On /usr/local/xray/config.json"; fi'
+alias startXray='if [ -f /usr/local/xray/config.json ]; then nohup /usr/local/xray/xray -config /usr/local/xray/config.json > xray.log 2>&1 & echo $! > xray.pid && /usr/local/xray/script/enable-xray-proxy.sh; else echo "File not Found On /usr/local/xray/config.json"; fi'
 
-alias stopVPN='if [ -f xray.pid ] && kill -0 $(cat xray.pid) 2>/dev/null; then kill $(cat xray.pid) && rm -f xray.pid && echo "Process terminated successfully." && /home/caesar/Downloads/remove_proxy.sh; else echo "No running process found or xray.pid is missing."; fi'
+alias stopXray='if [ -f xray.pid ] && kill -0 $(cat xray.pid) 2>/dev/null; then kill $(cat xray.pid) && rm -f xray.pid && echo "Process terminated successfully." &&  /usr/local/xray/script/disable-xray-proxy.sh; else echo "No running process found or xray.pid is missing."; fi'
 
 # -------------------------------
 # Custom Functions

@@ -2,8 +2,8 @@
 
 # Ensure the script is run as root
 if [[ $EUID -ne 0 ]]; then
-    echo "This script must be run as root. Please run with 'sudo'."
-    exit 1
+  echo "This script must be run as root. Please run with 'sudo'."
+  exit 1
 fi
 
 # Proceed with the rest of the script
@@ -105,33 +105,8 @@ sudo bash -c 'cat <<EOF > /usr/local/xray/config.json
 }
 EOF'
 
-# Step 4: Set up the proxy configuration file
-echo "Creating proxy configuration for apt..."
-sudo bash -c 'cat <<EOF > /etc/apt/apt.conf.d/95proxies
-Acquire::http::Proxy "http://127.0.0.1:10808/";
-Acquire::https::Proxy "http://127.0.0.1:10808/";
-EOF'
-
-# Step 5: Set GNOME proxy settings for SOCKS5
-echo "Setting GNOME proxy settings..."
-
-gsettings set org.gnome.system.proxy mode 'manual'
-gsettings set org.gnome.system.proxy.socks host '127.0.0.1'
-gsettings set org.gnome.system.proxy.socks port 10808
-
-# Step 6: Set environment variables for proxy globally
-echo "Setting environment variables for proxy..."
-
-echo 'export http_proxy="socks5://127.0.0.1:10808"' | sudo tee -a /etc/environment
-echo 'export https_proxy="socks5://127.0.0.1:10808"' | sudo tee -a /etc/environment
-echo 'export ftp_proxy="socks5://127.0.0.1:10808"' | sudo tee -a /etc/environment
-echo 'export all_proxy="socks5://127.0.0.1:10808"' | sudo tee -a /etc/environment
-
-# Step 7: Reload environment variables
-echo "Reloading environment variables..."
-source /etc/environment
-
-echo "VPN setup is complete! If you wish to revert GNOME proxy settings, use the following command:"
-echo "gsettings set org.gnome.system.proxy mode 'none'"
-
-echo "Environment variables for proxy have been set globally. To revert them, remove the corresponding lines from /etc/environment."
+# Step 5 Download Proxy enable and disable scripts
+sudo mkdir -p /usr/local/xray/script
+wget -P /usr/local/xray/script https://raw.githubusercontent.com/HenryHendersonDev/personal-setup-scripts/refs/heads/main/scripts/proxy/enable-xray-proxy.sh
+wget -P /usr/local/xray/script https://raw.githubusercontent.com/HenryHendersonDev/personal-setup-scripts/refs/heads/main/scripts/proxy/disable-xray-proxy.sh
+sudo touch /etc/apt/apt.conf.d/95proxies

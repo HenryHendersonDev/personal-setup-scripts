@@ -48,6 +48,15 @@ else
     echo "Proxy settings already exist in ~/.zshrc. Skipping appending."
 fi
 
+# Append the proxy settings to /etc/apt/apt.conf.d/95proxies (only if they don't already exist)
+echo "Appending proxy settings to /etc/apt/apt.conf.d/95proxies..."
+if ! grep -q 'Acquire::http::Proxy "http://127.0.0.1:10808";' /etc/apt/apt.conf.d/95proxies; then
+    echo -e "Acquire::http::Proxy \"http://127.0.0.1:10808/\";\nAcquire::https::Proxy \"http://127.0.0.1:10808/\";" | sudo tee -a /etc/apt/apt.conf.d/95proxies >/dev/null
+    echo "Proxy settings appended to /etc/apt/apt.conf.d/95proxies."
+else
+    echo "Proxy settings already exist in /etc/apt/apt.conf.d/95proxies. Skipping appending."
+fi
+
 # Source the updated ~/.zshrc
 echo "Sourcing the updated ~/.zshrc..."
 source ~/.zshrc

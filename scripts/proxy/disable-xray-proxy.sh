@@ -29,6 +29,16 @@ else
     echo "No proxy variables found in /etc/environment."
 fi
 
+# Remove proxy settings from /etc/apt/apt.conf.d/95proxies (only if they exist)
+echo "Removing proxy settings from /etc/apt/apt.conf.d/95proxies..."
+if grep -q 'Acquire::http::Proxy "http://127.0.0.1:10808/";' /etc/apt/apt.conf.d/95proxies; then
+    sudo sed -i '/Acquire::http::Proxy "http:\/\/127.0.0.1:10808\/";/d' /etc/apt/apt.conf.d/95proxies
+    sudo sed -i '/Acquire::https::Proxy "http:\/\/127.0.0.1:10808\/";/d' /etc/apt/apt.conf.d/95proxies
+    echo "Proxy settings removed from /etc/apt/apt.conf.d/95proxies."
+else
+    echo "No proxy settings found in /etc/apt/apt.conf.d/95proxies."
+fi
+
 # Remove proxy settings from ~/.zshrc and source it
 echo "Removing proxy settings from ~/.zshrc..."
 lines=$(cat ~/.zshrc)
