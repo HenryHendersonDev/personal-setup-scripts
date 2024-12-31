@@ -1,0 +1,179 @@
+[Totem]
+active-plugins=['apple-trailers', 'screenshot', 'autoload-subtitles', 'vimeo', 'open-directory', 'recent', 'variable-rate', 'movie-properties', 'mpris', 'screensaver', 'save-file', 'rotation', 'skipto']
+subtitle-encoding='UTF-8'
+
+[baobab/ui]
+is-maximized=false
+window-size=(960, 600)
+
+[control-center]
+last-panel='info-overview'
+window-state=(980, 640, true)
+
+[desktop/app-folders]
+folder-children=['Utilities', 'YaST']
+
+[desktop/app-folders/folders/Utilities]
+apps=['gnome-abrt.desktop', 'gnome-system-log.desktop', 'nm-connection-editor.desktop', 'org.gnome.baobab.desktop', 'org.gnome.Connections.desktop', 'org.gnome.DejaDup.desktop', 'org.gnome.Dictionary.desktop', 'org.gnome.DiskUtility.desktop', 'org.gnome.eog.desktop', 'org.gnome.Evince.desktop', 'org.gnome.FileRoller.desktop', 'org.gnome.fonts.desktop', 'org.gnome.seahorse.Application.desktop', 'org.gnome.tweaks.desktop', 'org.gnome.Usage.desktop', 'vinagre.desktop']
+categories=['X-GNOME-Utilities']
+name='X-GNOME-Utilities.directory'
+translate=true
+
+[desktop/app-folders/folders/YaST]
+categories=['X-SuSE-YaST']
+name='suse-yast.directory'
+translate=true
+
+[desktop/input-sources]
+sources=[('xkb', 'us')]
+xkb-options=@as []
+
+[desktop/interface]
+color-scheme='prefer-dark'
+enable-animations=true
+font-antialiasing='rgba'
+font-hinting='slight'
+font-name='Roboto 11'
+text-scaling-factor=1.0
+
+[desktop/notifications]
+application-children=['com-mattjakeman-extensionmanager', 'firefox-esr']
+
+[desktop/notifications/application/com-mattjakeman-extensionmanager]
+application-id='com.mattjakeman.ExtensionManager.desktop'
+
+[desktop/notifications/application/firefox-esr]
+application-id='firefox-esr.desktop'
+
+[desktop/peripherals/keyboard]
+numlock-state=true
+
+[desktop/wm/preferences]
+button-layout='appmenu:minimize,maximize,close'
+titlebar-font='Roboto Bold 11'
+
+[evolution-data-server]
+migrated=true
+
+[gnome-system-monitor]
+current-tab='resources'
+maximized=false
+network-total-in-bits=false
+show-dependencies=false
+show-whose-processes='user'
+window-state=(700, 500, 26, 23)
+
+[gnome-system-monitor/disktreenew]
+col-6-visible=true
+col-6-width=0
+
+[nautilus/preferences]
+default-folder-viewer='icon-view'
+migrated-gtk-settings=true
+search-filter-time-type='last_modified'
+
+[nautilus/window-state]
+initial-size=(890, 550)
+maximized=true
+
+[shell]
+disabled-extensions=['user-theme@gnome-shell-extensions.gcampax.github.com', 'drive-menu@gnome-shell-extensions.gcampax.github.com', 'places-menu@gnome-shell-extensions.gcampax.github.com', 'native-window-placement@gnome-shell-extensions.gcampax.github.com', 'launch-new-instance@gnome-shell-extensions.gcampax.github.com', 'auto-move-windows@gnome-shell-extensions.gcampax.github.com', 'apps-menu@gnome-shell-extensions.gcampax.github.com']
+enabled-extensions=['blur-my-shell@aunetx', 'dash-to-dock@micxgx.gmail.com', 'appindicatorsupport@rgcjonas.gmail.com', 'Vitals@CoreCoding.com', 'compiz-alike-magic-lamp-effect@hermes83.github.com', 'compiz-windows-effect@hermes83.github.com', 'CustomizeClockOnLockScreen@pratap.fastmail.fm', 'just-perfection-desktop@just-perfection', 'clipboard-indicator@tudmotu.com']
+welcome-dialog-last-shown-version='43.9'
+
+[shell/extensions/blur-my-shell]
+sigma=29
+
+[shell/extensions/clipboard-indicator]
+confirm-clear=true
+display-mode=0
+notify-on-copy=false
+strip-text=true
+
+[shell/extensions/com/github/hermes83/compiz-windows-effect]
+friction=4.0
+mass=20.0
+maximize-effect=true
+resize-effect=false
+speedup-factor-divider=4.0
+spring-k=4.0
+x-tiles=3.0
+y-tiles=3.0
+
+[shell/extensions/dash-to-dock]
+always-center-icons=true
+animate-show-apps=false
+apply-custom-theme=false
+background-color='rgb(21,21,21)'
+background-opacity=0.75
+custom-background-color=true
+custom-theme-shrink=true
+dash-max-icon-size=32
+disable-overview-on-startup=false
+dock-fixed=false
+dock-position='BOTTOM'
+extend-height=false
+height-fraction=0.33000000000000002
+hide-tooltip=false
+icon-size-fixed=true
+isolate-workspaces=false
+preferred-monitor=-2
+preferred-monitor-by-connector='Virtual-1'
+preview-size-scale=0.0
+running-indicator-style='DEFAULT'
+scroll-action='do-nothing'
+show-apps-at-top=true
+show-mounts-network=false
+transparency-mode='FIXED'
+
+[shell/extensions/just-perfection]
+activities-button-label=true
+animation=1
+calendar=false
+dash-separator=true
+events-button=false
+keyboard-layout=true
+looking-glass-height=0
+looking-glass-width=0
+panel=true
+panel-size=0
+weather=false
+window-picker-icon=true
+workspace-background-corner-size=0
+workspace-wrap-around=false
+world-clock=false
+
+[shell/extensions/lockscreen]
+customize-clock-format=false
+replace-clock-text='Hello Caesar'
+replace-date-text='default'
+
+[shell/extensions/ncom/github/hermes83/compiz-alike-magic-lamp-effect]
+duration=201.0
+effect='default'
+x-tiles=10.0
+y-tiles=10.0
+
+[shell/extensions/vitals]
+hide-icons=false
+hide-zeros=true
+position-in-panel=2
+show-battery=false
+show-fan=false
+show-storage=false
+show-temperature=false
+show-voltage=false
+use-higher-precision=true
+
+[software]
+check-timestamp=int64 1735620887
+first-run=false
+
+[terminal/legacy/profiles:/:b1dcc9dd-5262-4d8d-a863-c897e6d979b9]
+background-color='rgb(23,20,33)'
+bold-color-same-as-fg=true
+font='Noto Mono 12'
+foreground-color='rgb(208,207,204)'
+palette=['rgb(23,20,33)', 'rgb(192,28,40)', 'rgb(38,162,105)', 'rgb(162,115,76)', 'rgb(18,72,139)', 'rgb(163,71,186)', 'rgb(42,161,179)', 'rgb(208,207,204)', 'rgb(94,92,100)', 'rgb(246,97,81)', 'rgb(51,209,122)', 'rgb(233,173,12)', 'rgb(42,123,222)', 'rgb(192,97,203)', 'rgb(51,199,222)', 'rgb(255,255,255)']
+use-system-font=true
+use-theme-colors=false
