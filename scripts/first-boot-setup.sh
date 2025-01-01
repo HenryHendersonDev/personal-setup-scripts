@@ -53,12 +53,12 @@ log_success "APT sources updated."
 
 # Configure Network Manager
 log_info "Configuring Network Manager..."
-sudo sed -i '$d' /etc/network/interfaces
-sudo sed -i '$d' /etc/network/interfaces
-sudo sed -i '$d' /etc/network/interfaces
-sudo sed -i '$d' /etc/network/interfaces
-sudo sed -i '$d' /etc/NetworkManager/NetworkManager.conf
-echo "managed=true" | sudo tee -a /etc/network/interfaces >/dev/null
+sed -i '$d' /etc/network/interfaces
+sed -i '$d' /etc/network/interfaces
+sed -i '$d' /etc/network/interfaces
+sed -i '$d' /etc/network/interfaces
+sed -i '$d' /etc/NetworkManager/NetworkManager.conf
+echo "managed=true" | tee -a /etc/network/interfaces >/dev/null
 
 # Update and upgrade system packages
 log_info "Updating and upgrading system packages..."
