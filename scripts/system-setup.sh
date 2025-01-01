@@ -267,7 +267,7 @@ info_msg "_________FINAL SYSTEM CLEANUP_________"
 nala autoremove -y
 nala clean
 sudo dpkg --configure -a
-sudo apt remove imagemagick
+sudo apt remove imagemagick -y
 
 # Ask about running setup-vless-xray.sh
 read -p "Do you want to run setup-vless-xray.sh? (y/n): " run_vless
