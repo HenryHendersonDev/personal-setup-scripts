@@ -1,5 +1,11 @@
 #!/bin/bash
 
+# Ensure the script is run as root
+if [[ $EUID -ne 0 ]]; then
+    echo "This script must be run as root. Please run with 'sudo'."
+    exit 1
+fi
+
 # Define color codes for logging
 BLUE='\033[0;34m'
 GREEN='\033[0;32m'
@@ -25,13 +31,13 @@ log_error() {
 
 # Ensure the script is run as root
 if [[ $EUID -ne 0 ]]; then
-    log_error "This script must be run as root. Please run with 'sudo'."
+    log_error "This script must be run as root."
 fi
 
 # Prompt for username and add to sudo group
 read -p "Enter the username to make admin: " username
 if id "$username" &>/dev/null; then
-    sudo usermod -aG sudo "$username"
+    usermod -aG sudo "$username"
     log_success "User '$username' has been added to the sudo group and now has admin privileges."
 else
     log_error "User '$username' does not exist. Please create the user first."
@@ -39,8 +45,8 @@ fi
 
 # Update /etc/apt/sources.list
 log_info "Updating APT sources..."
-sudo sed -i '1d' /etc/apt/sources.list
-cat <<EOF | sudo tee -a /etc/apt/sources.list
+sed -i '1d' /etc/apt/sources.list
+cat <<EOF >>/etc/apt/sources.list
 deb http://deb.debian.org/debian/ bookworm main contrib non-free non-free-firmware
 EOF
 log_success "APT sources updated."
@@ -48,8 +54,8 @@ log_success "APT sources updated."
 # Configure Network Manager
 log_info "Configuring Network Manager..."
 if [ -f /etc/NetworkManager/NetworkManager.conf ]; then
-    sudo sed -i 's/^\(managed=\)false/\1true/' /etc/NetworkManager/NetworkManager.conf
-    sudo systemctl restart NetworkManager
+    sed -i 's/^\(managed=\)false/\1true/' /etc/NetworkManager/NetworkManager.conf
+    systemctl restart NetworkManager
     log_success "Network Manager configured and restarted."
     nmcli device status
 else
@@ -58,20 +64,21 @@ fi
 
 # Update and upgrade system packages
 log_info "Updating and upgrading system packages..."
-sudo apt update && sudo apt upgrade -y || log_warning "APT update/upgrade encountered issues."
+apt update && apt upgrade -y || log_warning "APT update/upgrade encountered issues."
 
 # Remove unnecessary packages
 log_info "Removing unnecessary packages..."
-sudo apt purge ifupdown -y || log_warning "Failed to purge 'ifupdown'."
+apt purge ifupdown -y || log_warning "Failed to purge 'ifupdown'."
 
 # Install necessary packages
 log_info "Installing necessary packages..."
-sudo nala update || log_warning "Failed to update package list with nala."
-sudo nala install -y gnome-core xorg network-manager-gnome wget nala sudo || log_error "Package installation failed."
+apt install -y nala || log_error "Failed to install 'nala'."
+nala update || log_warning "Failed to update package list with nala."
+nala install -y gnome-core xorg network-manager-gnome wget sudo || log_error "Package installation failed."
 
 # Fetch additional Debian packages
 log_info "Fetching additional Debian packages..."
-sudo nala fetch --debian stable --limit 10 --auto || log_warning "Failed to fetch additional packages."
+nala fetch --debian stable --limit 10 --auto || log_warning "Failed to fetch additional packages."
 
 # Final success message
 final_message="Setup completed! Please reboot your system to apply all changes."
@@ -84,4 +91,4 @@ for i in {10..1}; do
 done
 
 log_info "Rebooting now..."
-sudo reboot
+reboot
