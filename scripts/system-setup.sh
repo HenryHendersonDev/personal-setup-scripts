@@ -16,29 +16,51 @@ flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.f
 # Install Gnome Extensions and Tweaks Packages
 sudo apt install gnome-shell-extensions gnome-tweaks gnome-shell-extension-manager -y
 
-# Inform the user to install extensions
-echo "Please install the following extensions from the GNOME Extensions website:"
-echo "### just-perfection-desktop@just-perfection"
-echo "### compiz-windows-effect@hermes83.github.com"
-echo "### blur-my-shell@aunetx"
-echo "### dash-to-dock@micxgx.gmail.com"
-echo "### Vitals@CoreCoding.com"
-echo "### compiz-alike-magic-lamp-effect@hermes83.github.com"
-echo "### clipboard-indicator@tudmotu.com"
-echo "### apps-menu@gnome-shell-extensions.gcampax.github.com"
-echo "### auto-move-windows@gnome-shell-extensions.gcampax.github.com"
-echo "### drive-menu@gnome-shell-extensions.gcampax.github.com"
-echo "### launch-new-instance@gnome-shell-extensions.gcampax.github.com"
-echo "### native-window-placement@gnome-shell-extensions.gcampax.github.com"
-echo "### places-menu@gnome-shell-extensions.gcampax.github.com"
-echo "### screenshot-window-sizer@gnome-shell-extensions.gcampax.github.com"
-echo "### user-theme@gnome-shell-extensions.gcampax.github.com"
-echo "### window-list@gnome-shell-extensions.gcampax.github.com"
-echo "### windowsNavigator@gnome-shell-extensions.gcampax.github.com"
-echo "### workspace-indicator@gnome-shell-extensions.gcampax.github.com"
+if [ "$(id -u)" -eq 0 ]; then
+    USER=$(logname)
+    echo "Running as root, opening links as user $USER"
+else
+    USER=$(whoami)
+fi
 
-# Wait for user to press Enter to continue
-read -p "Press Enter to continue once you have installed the extensions..."
+LINKS=(
+    "https://extensions.gnome.org/extension/3843/just-perfection/"
+    "https://extensions.gnome.org/extension/3210/compiz-windows-effect/"
+    "https://extensions.gnome.org/extension/3193/blur-my-shell/"
+    "https://extensions.gnome.org/extension/307/dash-to-dock/"
+    "https://extensions.gnome.org/extension/1460/vitals/"
+    "https://extensions.gnome.org/extension/3740/compiz-alike-magic-lamp-effect/"
+    "https://extensions.gnome.org/extension/779/clipboard-indicator/"
+)
+
+# Log the links array for user to install
+echo "Please install the following extensions from the GNOME Extensions website:"
+for link in "${LINKS[@]}"; do
+    echo "$link"
+done
+
+echo "Press Enter to continue once you have installed the extensions."
+echo "Alternatively, press 'o' to open all the extension links in your browser after installation."
+
+read -n 1 -s -r -p "Press 'o' to open the links or press Enter to continue..."
+
+if [[ $REPLY == 'o' ]]; then
+    echo "Opening links in your browser..."
+    for link in "${LINKS[@]}"; do
+        if [ "$(id -u)" -eq 0 ]; then
+            sudo -u "$USER" xdg-open "$link"
+        else
+            xdg-open "$link"
+        fi
+        sleep 1
+    done
+
+    echo "Please ensure you've installed the extensions. Press Enter to continue."
+    read -p "Press Enter to continue once you have installed the extensions..."
+else
+    echo "Please install the extensions before proceeding. Press Enter once done."
+    read -p "Press Enter to continue once you have installed the extensions..."
+fi
 
 # Create temp directory in Downloads if it doesn't exist
 if [ ! -d ~/Downloads/temp ]; then
