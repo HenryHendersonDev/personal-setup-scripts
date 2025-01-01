@@ -53,14 +53,12 @@ log_success "APT sources updated."
 
 # Configure Network Manager
 log_info "Configuring Network Manager..."
-if [ -f /etc/NetworkManager/NetworkManager.conf ]; then
-    sed -i 's/^\(managed=\)false/\1true/' /etc/NetworkManager/NetworkManager.conf
-    systemctl restart NetworkManager
-    log_success "Network Manager configured and restarted."
-    nmcli device status
-else
-    log_warning "NetworkManager.conf not found. Skipping configuration."
-fi
+sudo sed -i '$d' /etc/network/interfaces
+sudo sed -i '$d' /etc/network/interfaces
+sudo sed -i '$d' /etc/network/interfaces
+sudo sed -i '$d' /etc/network/interfaces
+sudo sed -i '$d' /etc/NetworkManager/NetworkManager.conf
+echo "managed=true" | sudo tee -a /etc/network/interfaces >/dev/null
 
 # Update and upgrade system packages
 log_info "Updating and upgrading system packages..."
