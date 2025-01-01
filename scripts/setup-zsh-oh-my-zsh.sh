@@ -6,35 +6,38 @@ if [[ $EUID -ne 0 ]]; then
   exit 1
 fi
 
+# Get the actual user who ran sudo
+REAL_USER=$(logname || who am i | awk '{print $1}')
+REAL_HOME=$(eval echo ~$REAL_USER)
+
 # Step 1: Install required packages
 echo "Installing required packages: zsh, fzf..."
-sudo apt update && sudo apt install -y zsh fzf curl git nano
+nala update && nala install -y zsh fzf curl git nano
 
-# Step 2: Install Oh My Zsh
+# Step 2: Install Oh My Zsh for the real user
 echo "Installing Oh My Zsh..."
-sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+sudo -u $REAL_USER sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
 
 # Step 3: Clone necessary plugins
 echo "Cloning ZSH plugins..."
-git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
-git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
-git clone https://github.com/zsh-users/zsh-history-substring-search ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-history-substring-search
-git clone https://github.com/zsh-users/zsh-completions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-completions
-git clone https://github.com/psprint/zsh-navigation-tools ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-navigation-tools
-git clone https://github.com/jamiew/zsh-git-fast ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/gitfast
-git clone https://github.com/colorsch/color-man-pages ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/colored-man-pages
+sudo -u $REAL_USER git clone https://github.com/zsh-users/zsh-autosuggestions ${REAL_HOME}/.oh-my-zsh/custom/plugins/zsh-autosuggestions
+sudo -u $REAL_USER git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${REAL_HOME}/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
+sudo -u $REAL_USER git clone https://github.com/zsh-users/zsh-history-substring-search ${REAL_HOME}/.oh-my-zsh/custom/plugins/zsh-history-substring-search
+sudo -u $REAL_USER git clone https://github.com/zsh-users/zsh-completions ${REAL_HOME}/.oh-my-zsh/custom/plugins/zsh-completions
+sudo -u $REAL_USER git clone https://github.com/psprint/zsh-navigation-tools ${REAL_HOME}/.oh-my-zsh/custom/plugins/zsh-navigation-tools
 
-# Step 4: Change default shell to zsh
-echo "Changing the default shell to ZSH..."
-chsh -s $(which zsh)
+# Step 4: Change default shell to zsh for the real user
+chsh -s $(which zsh) $REAL_USER
 
 # Step 5: Configure .zshrc file
 echo "Configuring .zshrc file..."
 
-# Backup the existing .zshrc
-cp ~/.zshrc ~/.zshrc.backup
+# Backup the existing .zshrc if it exists
+if [ -f "${REAL_HOME}/.zshrc" ]; then
+    sudo -u $REAL_USER cp "${REAL_HOME}/.zshrc" "${REAL_HOME}/.zshrc.backup"
+fi
 
-cat >~/.zshrc <<'EOF'
+sudo -u $REAL_USER tee "${REAL_HOME}/.zshrc" > /dev/null << 'EOF'
 # -------------------------------
 # General Configuration
 # -------------------------------
@@ -152,8 +155,6 @@ fi
 
 EOF
 
-# Step 6: Reload ZSH configuration
-echo "Reloading ZSH configuration..."
-source ~/.zshrc
+chown $REAL_USER:$REAL_USER "${REAL_HOME}/.zshrc"
 
 echo "ZSH setup complete. Please restart your terminal."
