@@ -290,7 +290,7 @@ systemctl status redis-server --no-pager || warning_msg "Redis service check fai
 MESSAGE="Setup completed! Please reboot your system to apply all changes."
 
 echo -e "\033[1m$MESSAGE\033[0m"
-for i in {3..1}; do
+for i in {10..1}; do
     echo "Rebooting in $i seconds..."
     sleep 1
 done
