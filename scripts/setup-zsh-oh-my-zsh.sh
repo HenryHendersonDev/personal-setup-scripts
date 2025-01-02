@@ -18,6 +18,8 @@ nala update && nala install -y zsh fzf curl git nano
 echo "Installing Oh My Zsh..."
 sudo -u $REAL_USER sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
 
+mkdir -p ${REAL_HOME}/.oh-my-zsh/custom/plugins/
+
 # Step 3: Clone necessary plugins
 echo "Cloning ZSH plugins..."
 git clone https://github.com/zsh-users/zsh-autosuggestions ${REAL_HOME}/.oh-my-zsh/custom/plugins/zsh-autosuggestions
@@ -25,6 +27,8 @@ git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${REAL_HOME}/
 git clone https://github.com/zsh-users/zsh-history-substring-search ${REAL_HOME}/.oh-my-zsh/custom/plugins/zsh-history-substring-search
 git clone https://github.com/zsh-users/zsh-completions ${REAL_HOME}/.oh-my-zsh/custom/plugins/zsh-completions
 git clone https://github.com/psprint/zsh-navigation-tools ${REAL_HOME}/.oh-my-zsh/custom/plugins/zsh-navigation-tools
+
+chown -R $REAL_USER:$REAL_USER ${REAL_HOME}/.oh-my-zsh
 
 # Step 4: Change default shell to zsh for the real user
 chsh -s $(which zsh) $REAL_USER
