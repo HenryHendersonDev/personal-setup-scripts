@@ -249,6 +249,7 @@ SCRIPT_URLS=(
     "https://raw.githubusercontent.com/HenryHendersonDev/personal-setup-scripts/main/scripts/setup-zsh-oh-my-zsh.sh"
     "https://raw.githubusercontent.com/HenryHendersonDev/personal-setup-scripts/main/scripts/setup-vless-xray.sh"
     "https://raw.githubusercontent.com/HenryHendersonDev/personal-setup-scripts/main/scripts/nvidia-display-setup.sh"
+    "https://raw.githubusercontent.com/HenryHendersonDev/personal-setup-scripts/refs/heads/main/scripts/ZSH-plugins.sh"
 )
 
 for url in "${SCRIPT_URLS[@]}"; do
