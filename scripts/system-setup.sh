@@ -163,9 +163,10 @@ nala install -y nautilus gnome-calculator gnome-system-monitor || warning_msg "F
 
 # Install utilities
 info_msg "_________INSTALL UTILITIES_________"
-nala install -y wget curl neofetch postgresql postgresql-contrib git || warning_msg "Failed to install some utilities"
+nala install -y wget curl neofetch postgresql postgresql-contrib git preload || warning_msg "Failed to install some utilities"
 systemctl start postgresql || warning_msg "PostgreSQL service failed to start"
 systemctl enable postgresql
+sudo systemctl enable preload
 
 # Install Warp
 info_msg "_________INSTALL WARP_________"
