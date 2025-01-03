@@ -72,7 +72,7 @@ apt purge ifupdown -y || log_warning "Failed to purge 'ifupdown'."
 log_info "Installing necessary packages..."
 apt install -y nala || log_error "Failed to install 'nala'."
 nala update || log_warning "Failed to update package list with nala."
-nala install -y gnome-core xorg network-manager-gnome wget sudo || log_error "Package installation failed."
+nala install -y gnome-core xorg network-manager-gnome wget sudo curl || log_error "Package installation failed."
 
 # Fetch additional Debian packages
 log_info "Fetching additional Debian packages..."
