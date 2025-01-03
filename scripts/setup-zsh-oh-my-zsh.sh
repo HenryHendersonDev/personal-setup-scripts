@@ -22,29 +22,11 @@ mkdir -p ${REAL_HOME}/.oh-my-zsh/custom/plugins/
 
 # Step 3: Clone necessary plugins
 echo "Cloning ZSH plugins..."
-declare -A PLUGINS
-PLUGINS=(
-  ["zsh-autosuggestions"]="https://github.com/zsh-users/zsh-autosuggestions"
-  ["zsh-syntax-highlighting"]="https://github.com/zsh-users/zsh-syntax-highlighting.git"
-  ["zsh-history-substring-search"]="https://github.com/zsh-users/zsh-history-substring-search"
-  ["zsh-completions"]="https://github.com/zsh-users/zsh-completions"
-  ["zsh-navigation-tools"]="https://github.com/psprint/zsh-navigation-tools"
-)
-
-for PLUGIN in "${!PLUGINS[@]}"; do
-  TARGET_DIR="${PLUGIN_DIR}/${PLUGIN}"
-  if [[ ! -d "$TARGET_DIR" ]]; then
-    echo "Directory not found: $TARGET_DIR. Creating it..."
-    mkdir -p "$TARGET_DIR" || {
-      echo "Failed to create directory: $TARGET_DIR"
-      continue
-    }
-  fi
-  echo "Cloning $PLUGIN into $TARGET_DIR..."
-  sudo -u $REAL_USER git clone "${PLUGINS[$PLUGIN]}" "$TARGET_DIR" || {
-    echo "Failed to clone $PLUGIN."
-  }
-done
+git clone https://github.com/zsh-users/zsh-autosuggestions ${REAL_HOME}/.oh-my-zsh/custom/plugins/zsh-autosuggestions
+git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${REAL_HOME}/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
+git clone https://github.com/zsh-users/zsh-history-substring-search ${REAL_HOME}/.oh-my-zsh/custom/plugins/zsh-history-substring-search
+git clone https://github.com/zsh-users/zsh-completions ${REAL_HOME}/.oh-my-zsh/custom/plugins/zsh-completions
+git clone https://github.com/psprint/zsh-navigation-tools ${REAL_HOME}/.oh-my-zsh/custom/plugins/zsh-navigation-tools
 
 # Ensure ownership of .oh-my-zsh
 chown -R $REAL_USER:$REAL_USER "${REAL_HOME}/.oh-my-zsh"
