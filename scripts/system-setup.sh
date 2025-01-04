@@ -37,33 +37,6 @@ fi
 ACTUAL_USER=$(logname || who am i | awk '{print $1}')
 ACTUAL_HOME=$(eval echo ~${ACTUAL_USER})
 
-echo "Do you want to run only the Xray and Zsh shell setup scripts? (y for only Xray and Zsh, n for system setup + Xray and Zsh)"
-read -r user_input
-
-if [[ "$user_input" == "y" ]]; then
-    read -p "Do you want to run setup-vless-xray.sh? (y/n): " run_vless
-    if [[ $run_vless == "y" ]]; then
-        info_msg "Running setup-vless-xray.sh..."
-        bash -c "$(wget -qO- https://raw.githubusercontent.com/HenryHendersonDev/personal-setup-scripts/refs/heads/main/scripts/setup-vless-xray.sh)"
-    fi
-
-    # Ask about running setup-zsh-oh-my-zsh.sh
-    read -p "Do you want to run setup-zsh-oh-my-zsh.sh? (y/n): " run_zsh
-    if [[ $run_zsh == "y" ]]; then
-        info_msg "Running setup-zsh-oh-my-zsh.sh..."
-        bash -c "$(wget -qO- https://raw.githubusercontent.com/HenryHendersonDev/personal-setup-scripts/refs/heads/main/scripts/setup-zsh-oh-my-zsh.sh)"
-    fi
-    # Print final success message
-    MESSAGE="Setup completed! Please reboot your system to apply all changes."
-
-    echo -e "\033[1m$MESSAGE\033[0m"
-    for i in {5..1}; do
-        echo "Rebooting in $i seconds..."
-        sleep 1
-    done
-    echo "Rebooting now..."
-    sudo reboot
-elif [[ "$user_input" == "n" ]]; then
     # Create temp directory in Downloads first
     info_msg "_________CREATE TEMP DIRECTORY_________"
     TEMP_DIR="${ACTUAL_HOME}/Downloads/temp"
@@ -327,8 +300,3 @@ elif [[ "$user_input" == "n" ]]; then
     done
     echo "Rebooting now..."
     sudo reboot
-
-else
-    echo "Invalid input. Please run the script again and choose 'y' or 'n'. Exiting."
-    exit 1
-fi
