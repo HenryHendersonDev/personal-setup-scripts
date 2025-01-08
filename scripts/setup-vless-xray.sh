@@ -31,79 +31,8 @@ sudo rm /usr/local/xray/Xray-linux-64.zip
 # Step 3: Create and edit Xray config.json
 echo "Creating the Xray configuration file..."
 
-sudo bash -c 'cat <<EOF > /usr/local/xray/config.json
-{
-  "log": {
-    "loglevel": "info"
-  },
-  "inbounds": [
-    {
-      "tag": "socks-in",
-      "port": 10808,
-      "protocol": "socks",
-      "settings": {
-        "udp": true,
-        "auth": "noauth"
-      },
-      "sniffing": {
-        "enabled": true,
-        "destOverride": [
-          "http",
-          "tls"
-        ]
-      }
-    },
-    {
-      "tag": "http-in",
-      "port": 10809,
-      "protocol": "http",
-      "settings": {},
-      "sniffing": {
-        "enabled": true,
-        "destOverride": [
-          "http",
-          "tls"
-        ]
-      }
-    }
-  ],
-  "outbounds": [
-    {
-      "protocol": "vless",
-      "settings": {
-        "vnext": [
-          {
-            "address": "christmas.arunod.store",
-            "port": 443,
-            "users": [
-              {
-                "id": "c4b87bb5-88ff-494b-a1e8-571aa74b63c1",
-                "encryption": "none"
-              }
-            ]
-          }
-        ]
-      },
-      "streamSettings": {
-        "network": "ws",
-        "security": "tls",
-        "tlsSettings": {
-          "serverName": "aka.ms",
-          "allowInsecure": true,
-          "fingerprint": "chrome",
-          "alpn": [
-            "h2",
-            "http/1.1"
-          ]
-        },
-        "wsSettings": {
-          "path": "/"
-        }
-      }
-    }
-  ]
-}
-EOF'
+# Step 4: Download Config creator Script.
+sudo curl -L https://raw.githubusercontent.com/HenryHendersonDev/personal-setup-scripts/refs/heads/main/scripts/subScript/vless-to-config.sh -o /usr/local/xray/vless-to-config.sh
 
 # Step 5 Download Proxy enable and disable scripts
 sudo mkdir -p /usr/local/xray/script
@@ -111,3 +40,7 @@ wget -P /usr/local/xray/script https://raw.githubusercontent.com/HenryHendersonD
 wget -P /usr/local/xray/script https://raw.githubusercontent.com/HenryHendersonDev/personal-setup-scripts/refs/heads/main/scripts/proxy/disable-xray-proxy.sh
 sudo touch /etc/apt/apt.conf.d/95proxies
 sudo chmod +x /usr/local/xray/script/*
+
+sudo /usr/local/xray/vless-to-config.sh
+
+echo "Xray configuration file created successfully!"

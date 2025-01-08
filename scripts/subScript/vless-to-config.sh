@@ -165,12 +165,14 @@ cat >$configPath <<EOF
           ]
         },
         "wsSettings": {
-          "path": "$path"
+          "path": "/"
         }
       }
     }
   ]
 }
 EOF
+
+sudo chmod +x $configPath
 
 echo "Config file has been saved to $configPath"
