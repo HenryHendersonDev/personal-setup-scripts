@@ -20,19 +20,19 @@ tag=$(echo "$vless_url" | sed -n 's|.*#\(.*\)$|\1|p')
 
 # Set default values for parameters if they are empty or missing
 if [ -z "$path" ]; then
-    path="/"
+  path="/"
 fi
 if [ -z "$encryption" ]; then
-    encryption="none"
+  encryption="none"
 fi
 if [ -z "$header_type" ]; then
-    header_type="none"
+  header_type="none"
 fi
 if [ -z "$tag" ]; then
-    tag=""
+  tag=""
 fi
 if [ -z "$allow_insecure" ]; then
-    allow_insecure="0"
+  allow_insecure="0"
 fi
 
 # Echo the extracted variables
@@ -51,9 +51,9 @@ echo "Tag: $tag"
 
 # Convert allow_insecure to boolean
 if [ "$allow_insecure" = "1" ]; then
-    allow_insecure_bool="true"
+  allow_insecure_bool="true"
 else
-    allow_insecure_bool="false"
+  allow_insecure_bool="false"
 fi
 
 # Process ALPN string
@@ -64,19 +64,43 @@ IFS=',' read -ra ALPN_ARRAY <<<"$alpn_list"
 # Generate ALPN JSON array
 alpn_json=""
 for i in "${ALPN_ARRAY[@]}"; do
-    if [ -n "$alpn_json" ]; then
-        alpn_json="$alpn_json,"
-    fi
-    alpn_json="$alpn_json\"$i\""
+  if [ -n "$alpn_json" ]; then
+    alpn_json="$alpn_json,"
+  fi
+  alpn_json="$alpn_json\"$i\""
 done
 
 # If ALPN is empty, use default values
 if [ -z "$alpn_json" ]; then
-    alpn_json="\"h2\",\"http/1.1\""
+  alpn_json="\"h2\",\"http/1.1\""
+fi
+
+# Define the config path
+configPath="/usr/local/xray/config.json"
+dirPath="/usr/local/xray"
+
+# Check if the directory exists
+if [ ! -d "$dirPath" ]; then
+  echo "Directory $dirPath does not exist. Creating it..."
+  mkdir -p "$dirPath"
+  # Set read, write, and execute permissions for all users (777)
+  chmod 777 "$dirPath"
+  echo "Directory $dirPath created and permissions set to 777."
+else
+  echo "Directory $dirPath already exists."
+fi
+
+# Check if the file exists
+if [ -f "$configPath" ]; then
+  echo "File $configPath exists. Removing it..."
+  rm -f "$configPath"
+  echo "File $configPath has been removed."
+else
+  echo "File $configPath does not exist."
 fi
 
 # Create the config.json file
-cat >~/Downloads/config.json <<EOF
+cat >$configPath <<EOF
 {
   "log": {
     "loglevel": "info"
@@ -149,4 +173,4 @@ cat >~/Downloads/config.json <<EOF
 }
 EOF
 
-echo "Config file has been saved to ~/Downloads/config.json"
+echo "Config file has been saved to $configPath"
