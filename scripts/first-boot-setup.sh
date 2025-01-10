@@ -83,7 +83,7 @@ final_message="Setup completed! Please reboot your system to apply all changes."
 log_success "$final_message"
 
 # Countdown to reboot
-for i in {10..1}; do
+for i in {15..1}; do
     echo -e "Rebooting in $i seconds..."
     sleep 1
 done
