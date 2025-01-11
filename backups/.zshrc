@@ -4,6 +4,7 @@
 
 # Set the path for Oh My Zsh installation
 export ZSH="$HOME/.oh-my-zsh"
+export PATH=$PATH:/usr/local/node/bin
 
 # Set the theme for the Oh My Zsh prompt
 ZSH_THEME="robbyrussell"
@@ -67,16 +68,32 @@ alias gl="git log --oneline --graph --decorate --color" # Alias for 'git log'
 # Custom Aliases
 # -------------------------------
 
-alias cdcode="cd /home/caesar/code" # Alias to change directory to your code folder
-alias off="sudo shutdown -P now"    # Alias for shutting down the system immediately
+alias cdcode="cd /home/caesar/code"                   # Alias to change directory to your code folder
+alias off="sudo shutdown -P now"                      # Alias for shutting down the system immediately
+alias bleachbit="flatpak run org.bleachbit.BleachBit" # Alias for shutting down the system immediately
 
 # -------------------------------
 # Proxy Configuration Aliases
 # -------------------------------
 
-alias startXray='if [ -f /usr/local/xray/config.json ]; then nohup /usr/local/xray/xray -config /usr/local/xray/config.json > xray.log 2>&1 & echo $! > xray.pid && /usr/local/xray/script/enable-xray-proxy.sh; else echo "File not Found On /usr/local/xray/config.json"; fi'
+# alias startXray='if [ -f /usr/local/xray/config.json ]; then nohup /usr/local/xray/xray -config /usr/local/xray/config.json > xray.log 2>&1 & echo $! > xray.pid && /usr/local/xray/script/enable-xray-proxy.sh; else echo "File not Found On /usr/local/xray/config.json"; fi'
 
-alias stopXray='if [ -f xray.pid ] && kill -0 $(cat xray.pid) 2>/dev/null; then kill $(cat xray.pid) && rm -f xray.pid && echo "Process terminated successfully." &&  /usr/local/xray/script/disable-xray-proxy.sh; else echo "No running process found or xray.pid is missing."; fi'
+# alias stopXray='if [ -f xray.pid ] && kill -0 $(cat xray.pid) 2>/dev/null; then kill $(cat xray.pid) && rm -f xray.pid && echo "Process terminated successfully." &&  /usr/local/xray/script/disable-xray-proxy.sh; else echo "No running process found or xray.pid is missing."; fi'
+
+alias startXray='if [ -f /usr/local/xray/config.json ]; then nohup /usr/local/xray/xray -config /usr/local/xray/config.json > /usr/local/xray/xray.log 2>&1 & echo $! > /usr/local/xray/xray.pid && /usr/local/xray/script/enable-xray-proxy.sh; else echo "File not Found On /usr/local/xray/config.json"; fi'
+
+alias stopXray='if [ -f /usr/local/xray/xray.pid ] && kill -0 $(cat /usr/local/xray/xray.pid) 2>/dev/null; then kill $(cat /usr/local/xray/xray.pid) && rm -f /usr/local/xray/xray.pid && echo "Process terminated successfully." &&  /usr/local/xray/script/disable-xray-proxy.sh; else echo "No running process found or /usr/local/xray/xray.pid is missing."; fi'
+
+alias removeProxy='/usr/local/xray/script/disable-xray-proxy.sh'
+alias enableProxy='/usr/local/xray/script/enable-xray-proxy.sh'
+
+alias enable-redis="sudo systemctl enable redis-server.service && sudo systemctl start redis-server.service"
+alias enable-postgresql="sudo systemctl enable postgresql.service && sudo systemctl start postgresql.service"
+# alias enable-ollama="sudo systemctl enable ollama.service && sudo systemctl start ollama.service"
+
+alias clean="bleachbit --clean bash.history deepscan.tmp deepscan.ds_store deepscan.thumbs_db deepscan.vim_swap_user deepscan.vim_swap_root system.cache system.tmp system.trash system.rotated_logs system.recent_documents system.localizations discord.cache vlc.mru"
+
+alias flatpak='http_proxy="http://127.0.0.1:10808" https_proxy="http://127.0.0.1:10808" ftp_proxy="http://127.0.0.1:10808" all_proxy="socks5://127.0.0.1:10808" flatpak'
 
 # -------------------------------
 # Custom Functions
