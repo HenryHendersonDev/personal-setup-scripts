@@ -88,6 +88,60 @@ ACTUAL_HOME=$(eval echo ~${ACTUAL_USER})
     info_msg "_________INSTALL GNOME EXTENSIONS AND TWEAKS_________"
     nala install -y gnome-shell-extensions gnome-tweaks gnome-shell-extension-manager || handle_error "Failed to install GNOME packages"
 
+    # Download and install extensions
+    info_msg "_________DOWNLOADING AND INSTALLING GNOME EXTENSIONS_________"
+    # Download as the actual user
+    sudo -u "$ACTUAL_USER" wget -P "$TEMP_DIR" https://raw.githubusercontent.com/HenryHendersonDev/personal-setup-scripts/main/assets/extension.zip || handle_error "Failed to download extensions"
+
+    # Create extensions directory and set permissions
+    mkdir -p "$TEMP_DIR/extensions"
+    chown "${ACTUAL_USER}:${ACTUAL_USER}" "$TEMP_DIR/extensions"
+
+    # Unzip as the actual user
+    sudo -u "$ACTUAL_USER" unzip -o "$TEMP_DIR/extension.zip" -d "$TEMP_DIR/extensions" || handle_error "Failed to unzip extensions"
+
+    # Set proper permissions
+    chmod -R 755 "$TEMP_DIR/extensions"
+    chown -R "${ACTUAL_USER}:${ACTUAL_USER}" "$TEMP_DIR/extensions"
+
+    # Install and enable extensions as the actual user
+    cd "$TEMP_DIR/extensions" || handle_error "Failed to access extensions directory"
+    for ext in *.shell-extension.zip; do
+        if [ -f "$ext" ]; then
+            sudo -u "$ACTUAL_USER" DBUS_SESSION_BUS_ADDRESS="unix:path=/run/user/$(id -u $ACTUAL_USER)/bus" gnome-extensions install --force "$ext" || warning_msg "Failed to install extension: $ext"
+        fi
+    done
+
+    # Enable extensions with proper dbus session
+    sudo -u "$ACTUAL_USER" bash -c "export DBUS_SESSION_BUS_ADDRESS=\"unix:path=/run/user/$(id -u $ACTUAL_USER)/bus\" && {
+    gnome-extensions enable just-perfection-desktop@just-perfection
+    gnome-extensions enable compiz-windows-effect@hermes83.github.com
+    gnome-extensions enable blur-my-shell@aunetx
+    gnome-extensions enable dash-to-dock@micxgx.gmail.com
+    gnome-extensions enable Vitals@CoreCoding.com
+    gnome-extensions enable compiz-alike-magic-lamp-effect@hermes83.github.com
+    gnome-extensions enable clipboard-indicator@tudmotu.com
+}"
+
+    # Download backup files with error checking
+    info_msg "_________DOWNLOAD BACKUP FILES_________"
+    sudo -u "$ACTUAL_USER" wget -P "$TEMP_DIR" https://raw.githubusercontent.com/HenryHendersonDev/personal-setup-scripts/main/backups/gnome-backup.txt || handle_error "Failed to download gnome-backup.txt"
+    sudo -u "$ACTUAL_USER" wget -P "$TEMP_DIR" https://raw.githubusercontent.com/HenryHendersonDev/personal-setup-scripts/main/backups/gnome-extensions-backup.txt || handle_error "Failed to download gnome-extensions-backup.txt"
+
+    # Restore settings from backups with proper dbus session
+    info_msg "_________RESTORE SETTINGS FROM BACKUPS_________"
+    sudo -u "$ACTUAL_USER" bash -c "export DBUS_SESSION_BUS_ADDRESS=\"unix:path=/run/user/$(id -u $ACTUAL_USER)/bus\" && {
+    if [ -f \"$TEMP_DIR/gnome-backup.txt\" ]; then
+        dconf load /org/gnome/ < \"$TEMP_DIR/gnome-backup.txt\"
+    fi
+    if [ -f \"$TEMP_DIR/gnome-extensions-backup.txt\" ]; then
+        dconf load /org/gnome/shell/extensions/ < \"$TEMP_DIR/gnome-extensions-backup.txt\"
+    fi
+}"
+
+    # List GNOME extensions
+    info_msg "_________LIST GNOME EXTENSIONS_________"
+    sudo -u "$ACTUAL_USER" DBUS_SESSION_BUS_ADDRESS="unix:path=/run/user/$(id -u $ACTUAL_USER)/bus" gnome-extensions list
 
     # Add sources
     info_msg "_________ADD SOURCES TO APT_________"
